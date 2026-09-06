@@ -1,0 +1,45 @@
+PROGRAMAÇÃO LESTE NORTE — PUBLICAÇÃO NO GITHUB PAGES
+
+Este pacote contém o site completo, com o gráfico de tipos de intervenção revisado, a base de dados incorporada e o Excel original.
+
+PUBLICAR
+
+1. Extraia o ZIP no computador.
+2. No GitHub, abra o repositório que receberá o site ou crie um repositório com o nome Programacao_Leste_Norte.
+3. Envie todos os arquivos extraídos e a pasta vendor para a raiz do repositório. O arquivo index.html deve ficar diretamente na raiz, e não dentro de uma pasta adicional. Envie o conteúdo extraído, não o arquivo ZIP.
+4. Confirme o envio dos arquivos em Commit changes.
+5. Abra Settings > Pages.
+6. Em Build and deployment, selecione Source: Deploy from a branch.
+7. Selecione a branch main e a pasta / (root). Clique em Save.
+8. Aguarde a publicação e abra o endereço exibido em Pages.
+
+Se o repositório já usa outra branch, selecione a mesma branch em que você enviou os arquivos.
+
+INFORMAÇÕES DO PACOTE
+
+- index.html: página inicial.
+- styles.css: aparência e adaptação para celular.
+- app.js e core.js: gráficos, filtros, tabela, importação e exportação.
+- data.js: todos os registros da planilha incorporados ao site.
+- Programao_obras_Dezembro.xlsx: Excel original disponível para download.
+- favicon.svg: ícone do site.
+- vendor: biblioteca de Excel e respectiva licença. Preserve esta pasta.
+
+O site funciona como página estática. Não é necessário instalar programas, executar comandos ou contratar servidor de aplicação para publicar este pacote no GitHub Pages.
+
+CONSULTAR OS DADOS
+
+Use Planilha completa no menu superior para visualizar as 10 colunas da planilha, filtrar os registros e baixar a consulta em Excel ou CSV. Clique no número do projeto para abrir o histórico da base atual.
+
+O gráfico de tipos de intervenção utiliza barras horizontais, quantidade, participação percentual e cores fixas por tipo. Clique em uma barra para filtrar. Clique novamente no tipo selecionado para remover esse filtro.
+
+IMPORTANTE SOBRE A BASE
+
+O arquivo original tem 453 registros e 408 projetos, com datas de 07/09/2026 a 18/10/2026. O período é setembro/outubro, apesar de “Dezembro” no nome do arquivo. Todos os registros estão disponíveis, inclusive os 53 de outras regiões.
+
+Importar base atualiza somente o navegador de quem realiza a importação. Essa ação não publica a nova planilha para outros visitantes. Para atualizar os dados para todos, publique um novo pacote com a base incorporada atualizada. O Excel original deste pacote está disponível no botão Baixar Excel original.
+
+Se estiver substituindo uma versão anterior, atualize todos os arquivos do pacote e recarregue a página com Ctrl + F5 após a publicação.
+
+ORIENTAÇÃO OFICIAL DO GITHUB
+https://docs.github.com/en/pages/getting-started-with-github-pages/configuring-a-publishing-source-for-your-github-pages-site

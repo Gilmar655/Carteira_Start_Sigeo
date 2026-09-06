@@ -1,0 +1,77 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#101e35">
+  <meta name="description" content="Programação Leste Norte: consulta de projetos, intervenções, contratadas e status, com indicadores e acesso completo à planilha de obras.">
+  <title>Programação Leste Norte</title>
+  <link rel="icon" type="image/svg+xml" href="favicon.svg">
+  <link rel="stylesheet" href="styles.css">
+  <script defer src="data.js"></script>
+  <script defer src="core.js"></script>
+  <script defer src="vendor/xlsx.full.min.js"></script>
+  <script defer src="app.js"></script>
+</head>
+<body>
+  <a class="skip-link" href="#main">Ir para o conteúdo</a>
+  <header class="topbar">
+    <div class="header-inner">
+      <a class="brand" href="#overview" aria-label="Programação Leste Norte, início"><span class="brand-symbol" aria-hidden="true">LN<span></span></span><span class="brand-name">PROGRAMAÇÃO<span>LESTE NORTE</span></span></a>
+      <nav class="main-nav" aria-label="Navegação principal"><a class="active" href="#overview">Visão geral</a><a href="#analytics">Análises</a><a href="#database">Planilha completa</a></nav>
+      <div class="header-right"><div class="clock"><strong id="clock">—</strong><span id="clockDate">Horário de São Paulo</span></div><span class="enel-wordmark" aria-label="Enel Brasil">enel<span>BRASIL</span></span></div>
+    </div>
+  </header>
+  <main id="main" class="shell">
+    <section id="overview" class="intro">
+      <div><div class="eyebrow">GESTÃO DE OBRAS <span>/</span> DISTRIBUIÇÃO SÃO PAULO</div><h1>Programação Leste Norte<span class="title-point">.</span></h1><p>Acompanhe projetos, intervenções e liberação das programações.</p></div>
+      <div class="intro-actions"><button id="importButton" class="button secondary"><span data-icon="upload"></span>Importar base</button><input type="file" id="fileInput" accept=".xlsx,.xls,.csv" hidden><a href="Programao_obras_Dezembro.xlsx" download class="button primary" id="originalDownload"><span data-icon="download"></span>Baixar Excel original</a></div>
+    </section>
+    <section class="source-strip" aria-label="Informações da base"><div class="source-file"><span data-icon="file"></span><span><strong id="sourceName">Programao_obras_Dezembro.xlsx</strong><small id="sourceCaption">Aba Dados · base incorporada</small></span></div><div class="source-stat"><span>PERÍODO DA PLANILHA</span><strong id="sourcePeriod">07 set — 18 out 2026</strong></div><div class="source-stat"><span>BASE COMPLETA</span><strong id="sourceTotal">453 registros · 408 projetos</strong></div><button class="text-button" id="restoreButton" title="Voltar à planilha enviada com este site"><span data-icon="refresh"></span>Restaurar base original</button></section>
+    <div class="data-note" id="dataNote"><span data-icon="info"></span><span>O período é definido pelas datas da planilha. A base completa inclui registros de outras regiões.</span><button id="showOtherRegions" class="inline-button">Ver outras regiões <span aria-hidden="true">↗</span></button></div>
+    <section class="filter-card" aria-labelledby="filterHeading">
+      <div class="section-heading"><h2 id="filterHeading"><span data-icon="filter"></span>Filtros da programação</h2><div class="filter-heading-actions"><span id="filterCount" class="subtle">Base completa</span><button id="clearFilters" class="text-button"><span data-icon="reset"></span>Limpar filtros</button></div></div>
+      <div class="filters-grid">
+        <label class="search-field"><span>Buscar projeto ou equipamento</span><span class="input-with-icon"><span data-icon="search"></span><input id="fSearch" type="search" placeholder="Projeto, equipamento, palavra-chave…" autocomplete="off"></span></label>
+        <label><span>Data inicial</span><input id="fFrom" type="date"></label>
+        <label><span>Data final</span><input id="fTo" type="date"></label>
+        <label><span>Mês / ano</span><select id="fMonth"><option value="">Todos os meses</option></select></label>
+        <label><span>Região do projeto</span><select id="fRegion"><option value="">Todas as regiões</option></select></label>
+        <label><span>Contratada</span><select id="fContractor"><option value="">Todas as contratadas</option></select></label>
+        <label><span>Status de programação</span><select id="fStatus"><option value="">Todos os status</option></select></label>
+        <label><span>Tipo de intervenção</span><select id="fType"><option value="">Todas as intervenções</option></select></label>
+        <label><span>Descrição do serviço</span><select id="fDescription"><option value="">Todos os serviços</option></select></label>
+        <label><span>Número PowerON</span><input id="fPower" type="search" placeholder="Número ou observação" autocomplete="off"></label>
+      </div>
+      <div class="filter-bottom"><div class="mode-switch" role="group" aria-label="Modo de análise"><button data-mode="history" aria-pressed="true" class="selected">Todas as programações</button><button data-mode="latest" aria-pressed="false" title="Usa a maior data de programação de cada projeto, incluindo datas futuras. Em empate, considera o horário de início e a última linha.">Última por projeto</button></div><span class="subtle" id="modeHint">Indicadores e gráficos seguem os mesmos filtros.</span></div>
+      <div id="activeFilters" class="active-filters" aria-label="Filtros aplicados"></div><p id="dateError" role="alert" class="error-text" hidden>A data final deve ser igual ou posterior à data inicial.</p>
+    </section>
+    <div class="results-heading"><h2>Panorama da programação</h2><span id="resultCount" role="status" aria-live="polite">453 registros na consulta</span></div>
+    <section class="kpi-grid" aria-label="Indicadores da consulta" id="kpis"></section>
+    <section class="main-charts" aria-label="Gráficos da programação">
+      <article class="panel status-panel"><div class="panel-heading"><div><span class="eyebrow">ANDAMENTO</span><h2>Status de programação</h2></div><span class="panel-icon" data-icon="pie"></span></div><div class="status-chart" id="statusChart"></div><p class="chart-footnote">Selecione um status para filtrar a consulta.</p></article>
+      <article class="panel schedule-panel"><div class="panel-heading"><div><span class="eyebrow">DISTRIBUIÇÃO NO PERÍODO</span><h2>Volume de programações</h2></div><div class="small-switch" role="group" aria-label="Agrupar gráfico de volume"><button data-period="day" class="selected" aria-pressed="true">Por dia</button><button data-period="month" aria-pressed="false">Por mês</button></div></div><div class="chart-key"><i></i><span>Programações</span><span id="peakCaption"></span></div><div id="scheduleChart" class="schedule-chart"></div><div class="chart-caption"><span id="chartRange"></span><span>Clique em uma coluna para consultar.</span></div></article>
+    </section>
+    <section id="analytics" class="secondary-charts" aria-label="Análises por contratada, intervenção e serviço">
+      <article class="panel"><div class="panel-heading"><div><span class="eyebrow">PARCEIRAS</span><h2>Programações por contratada</h2></div><span class="panel-icon" data-icon="team"></span></div><div id="contractorChart" class="bars"></div></article>
+      <article class="panel intervention-panel"><div class="panel-heading"><div><span class="eyebrow">MODALIDADE</span><h2 id="typeChartHeading">Tipos de intervenção</h2></div><span class="panel-icon" data-icon="layers"></span></div><div id="typeChart" class="type-chart" aria-labelledby="typeChartHeading"></div><div class="region-overview"><h3>Região do projeto</h3><div id="regionChart" class="region-chart"></div><p>Região identificada pelo código do projeto.</p></div></article>
+      <article class="panel"><div class="panel-heading"><div><span class="eyebrow">CARTEIRA</span><h2>Descrição dos serviços</h2></div><span class="panel-icon" data-icon="list"></span></div><div id="descriptionChart" class="bars"></div><p class="chart-footnote" id="descriptionFootnote">8 serviços com maior volume na consulta.</p></article>
+    </section>
+    <section class="attention-section" aria-labelledby="attentionHeading"><div class="results-heading"><h2 id="attentionHeading"><span data-icon="attention"></span>Pontos de atenção</h2><span>Verificações dos registros da consulta</span></div><div id="attentionCards" class="attention-grid"></div><p class="attention-note">O status segue a coluna “Status Programacao”. Observações no PowerON não são convertidas em status.</p></section>
+    <section class="summary-layout">
+      <article class="panel pivot-panel"><div class="panel-heading"><div><span class="eyebrow">RESUMO GERENCIAL</span><h2>Tabelas dinâmicas</h2></div><button id="exportSummary" class="text-button"><span data-icon="download"></span>CSV do resumo</button></div><div class="tab-row" role="tablist" aria-label="Agrupar resumo"><button role="tab" id="tab-status" aria-controls="pivotPanel" aria-selected="true" data-pivot="status" class="selected">Status</button><button role="tab" id="tab-contractor" aria-controls="pivotPanel" aria-selected="false" tabindex="-1" data-pivot="contractor">Contratada</button><button role="tab" id="tab-type" aria-controls="pivotPanel" aria-selected="false" tabindex="-1" data-pivot="type">Intervenção</button><button role="tab" id="tab-description" aria-controls="pivotPanel" aria-selected="false" tabindex="-1" data-pivot="description">Serviço</button><button role="tab" id="tab-month" aria-controls="pivotPanel" aria-selected="false" tabindex="-1" data-pivot="month">Mensal</button><button role="tab" id="tab-project" aria-controls="pivotPanel" aria-selected="false" tabindex="-1" data-pivot="project">Projeto</button></div><div id="pivotPanel" role="tabpanel" aria-labelledby="tab-status" class="table-scroll pivot-scroll" tabindex="0"><table class="summary-table"><thead id="pivotHead"></thead><tbody id="pivotBody"></tbody><tfoot id="pivotFoot"></tfoot></table></div></article>
+      <article class="panel quality-panel"><div class="panel-heading"><div><span class="eyebrow">CONFERÊNCIA</span><h2>Qualidade da consulta</h2></div><span data-icon="check" class="panel-icon"></span></div><div id="qualityStats"></div><details class="data-method"><summary>Como os dados são apresentados</summary><p>A coluna original “Empresa Executante” contém descrições de serviços e é usada como “Descrição do serviço” nos gráficos. A identificação das empresas utiliza “Contratada”.</p><p>A contagem de projetos considera códigos distintos. Cada linha preenchida é uma programação. A quantidade de registros por projeto não comprova cancelamento ou reprogramação.</p><p>“Última por projeto” considera a maior data programada, mesmo que futura. Em empate, utiliza o horário de início e a última linha da planilha.</p><p>Os horários preservam a data original. Atividades que terminam no dia seguinte aparecem com data e hora completas na tabela.</p></details><a href="https://gilmar655.github.io/Carteira_Start_Sigeo/" target="_blank" rel="noopener noreferrer" class="reference-link">Site de referência <span aria-hidden="true">↗</span></a></article>
+    </section>
+    <section id="database" class="panel database-panel" aria-labelledby="databaseHeading">
+      <div class="panel-heading"><div><span class="eyebrow">CONSULTA DA PLANILHA EXCEL</span><h2 id="databaseHeading">Base completa de programações <span id="tableCount" class="count-badge">453</span></h2><p>Todas as colunas da planilha. Clique no projeto para consultar seu histórico.</p></div><div class="table-actions"><button id="exportCsv" class="button secondary"><span data-icon="download"></span>CSV</button><button id="exportExcel" class="button primary"><span data-icon="download"></span>Excel da consulta</button><button id="fullscreen" class="icon-button" title="Ampliar a tabela" aria-label="Ampliar a tabela"><span data-icon="expand"></span></button></div></div>
+      <div class="table-toolbar"><span id="tableCaption">Exibindo os registros da base completa</span><label>Linhas por página <select id="pageSize"><option value="25">25</option><option value="50">50</option><option value="100">100</option><option value="250">250</option><option value="all">Todas</option></select></label></div>
+      <div class="table-scroll data-scroll" tabindex="0" aria-label="Tabela completa; deslize horizontalmente para consultar todas as colunas"><table class="data-table"><caption class="sr-only">Dados originais da planilha, com região e quantidade de programações como informações adicionais.</caption><thead id="tableHead"></thead><tbody id="tableBody"></tbody></table></div>
+      <div class="pagination"><span id="pageInfo"></span><div><button id="prevPage" class="button secondary"><span aria-hidden="true">←</span>Anterior</button><span id="pageNumber"></span><button id="nextPage" class="button secondary">Próxima<span aria-hidden="true">→</span></button></div></div>
+    </section>
+    <footer><div><strong>Programação Leste Norte</strong><span>Gestão de programações · Enel Brasil</span></div><p id="localNotice">Arquivos importados são processados e salvos somente neste navegador.</p><a href="#overview">Voltar ao início ↑</a></footer>
+  </main>
+  <dialog id="projectDialog" aria-labelledby="dialogTitle"><div class="dialog-header"><div><span class="eyebrow">HISTÓRICO COMPLETO NA BASE ATUAL</span><h2 id="dialogTitle"></h2></div><button id="closeDialog" class="icon-button" aria-label="Fechar histórico">×</button></div><div id="dialogMeta"></div><div id="dialogContent"></div><div class="dialog-footer"><p>Inclui as programações do projeto fora dos filtros atuais.</p><button id="closeDialogBottom" class="button secondary">Fechar</button></div></dialog>
+  <div id="toast" class="toast" role="status" aria-live="polite" hidden></div>
+  <noscript><div class="noscript">Ative o JavaScript para usar o dashboard. <a href="Programao_obras_Dezembro.xlsx" download>Baixar a planilha original</a>.</div></noscript>
+</body>
+</html>
