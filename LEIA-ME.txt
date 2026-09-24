@@ -1,0 +1,38 @@
+PROGRAMAÇÃO PROJETOS SIGEO — VERSÃO 3, GRÁFICOS INCORPORADOS
+
+COMO PUBLICAR
+1. Extraia todos os arquivos deste ZIP para uma pasta no computador.
+2. Abra index.html para conferir os cinco gráficos e a tabela.
+3. No repositório do GitHub, substitua o index.html antigo por ESTE index.html.
+4. O arquivo index.html deve ficar na raiz da pasta publicada, e não dentro de uma subpasta.
+5. Envie também .nojekyll. LEIA-ME.txt, LICENCA-JSZip.md e base_original.xlsx acompanham o pacote.
+6. Settings > Pages > Deploy from a branch > main > /(root) > Save.
+7. Espere a publicação concluir no GitHub. Depois abra o site e pressione Ctrl+F5.
+8. A nova página mostra “Versão 3 · gráficos incorporados” no topo. Se essa identificação não aparecer, a página publicada ainda é a anterior.
+
+O QUE FOI ALTERADO
+O index.html contém a aparência, os cinco gráficos, o programa de importação/exportação e toda a base de dados. Ele NÃO carrega charts.js, app.js, styles.css, data.js ou bibliotecas de CDN. Arquivos auxiliares de versões anteriores podem permanecer no repositório: não são utilizados por este index.html.
+
+Os gráficos iniciais já estão desenhados no HTML. Não dependem da execução do JavaScript para aparecer. O JavaScript ativa os filtros e recalcula os gráficos e a tabela. Se ocorrer erro, a página apresenta uma mensagem e desativa os controles para não mostrar filtros sem efeito.
+
+GRÁFICOS
+- Status da programação.
+- Tipo de intervenção.
+- Contratada (todas as contratadas do resultado).
+- Região.
+- Programações ao longo do tempo, por dia ou mês.
+Clique nas barras para filtrar; clique novamente para remover o filtro. Os gráficos usam todos os registros filtrados, independentemente da página da tabela. A unidade é programação (registro), não projeto distinto.
+
+BASE INICIAL
+460 registros, 423 projetos distintos e 11 colunas. Data de atualização: 24/09/2026. Datas presentes na base: 24/09 a 31/10/2026. Apesar do nome da planilha, não há registros de novembro ou dezembro.
+
+IMPORTAR E ATUALIZAR
+Importação de .xlsx ou .csv até 20 MB; escolha a aba e informe a data da atualização. Mantenha as 11 colunas originais. Colunas adicionais são preservadas. Datas devem ser datas Excel ou textos DD/MM/AAAA ou AAAA-MM-DD. Arquivos .xls devem ser convertidos em .xlsx. Fórmulas usam os resultados salvos pelo Excel. A importação substitui a base desta sessão somente após validação.
+
+Após importar, clique em BAIXAR SITE ATUALIZADO. O botão baixa um novo index.html com toda a base importada, os gráficos, os filtros e a data informada. Substitua o index.html do GitHub pelo arquivo baixado para atualizar o site para todos. Esta versão não utiliza a atualização por data.js.
+
+EXPORTAR
+Escolha resultado dos filtros ou base completa, depois Excel ou CSV. A exportação inclui todas as colunas e todas as linhas do resultado, independentemente da paginação. Os valores são mantidos como texto no Excel para preservar códigos e datas apresentadas. CSV usa UTF-8 com BOM e ponto e vírgula; valores iniciados por =, +, - ou @ recebem apóstrofo de proteção.
+
+OUTROS RECURSOS
+Relógio do dispositivo no fuso de Brasília, data de atualização da base, busca geral, filtros por coluna, cabeçalhos ordenáveis, paginação e atalhos para gráficos e tabela. Sem sincronização automática com Sigeo.
